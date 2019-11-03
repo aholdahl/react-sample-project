@@ -310,5 +310,16 @@ Click Create Repository
 
 In Terminal, enter the following commands:
 --
+    git init
+    git add .
+    git commit -m "initial commit"
+    git remote add origin https://github.com/yourUserName/sample-project-name.git
+    git push -u origin master
+--
 
+Going forward, if you are the sole contributor, future changes can be pushed as follows:
+--
+    git add .
+    git commit -m "description of recent changes"
+    git push
 --
