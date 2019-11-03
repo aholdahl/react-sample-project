@@ -1,5 +1,8 @@
 # ASSUMPTIONS
 
+You are already familiar with the React framework. 
+    This project is intended to be a process document for reference during the build process. It is not intended for training programmers that are new to React and therefore does not elaborate on the "why" or the "how".
+
 You should have the following installed:
 --
     Node
@@ -7,8 +10,29 @@ You should have the following installed:
     HomeBrew
     Postico
 --
+# USING THIS REPO AS A TEMPLATE
 
-# CLIENT SIDE
+Open the repo in Github: https://github.com/aholdahl/react-sample-project
+Click Clone or Download, then click Download ZIP
+Unzip the file and rename it
+Create your database and table(s) in Postico
+Update database.sql to reflect the SQL code to create the database and tables for the initial setup of your project
+Update pool.js to reflect the applicable database name
+Update sample.router.js to reflect the applicable table name in queryText
+In Terminal, run the following commands:
+--
+    npm install
+    npm run server
+    cmd+t
+    npm run client
+--
+The DOM should reflect "Hello World!" and "Hello from SampleComponent!", and the client console should reflect the array of objects retrieved from your database table. If so, you should be ready to code!
+
+See the last section of this file for instructions to push your project to a new Github repository. Remember to update the README with your own information before publishing.
+
+# BUILDING FROM SCRATCH
+
+## CLIENT SIDE
 
 In Terminal, type the following commands:
 --
@@ -55,7 +79,7 @@ In Terminal, type the following command:
 If you see Hello World in the DOM, you are ready to build a simple client-side app.
 --
 
-## COMPONENTIZING THE CLIENT SIDE
+### COMPONENTIZING THE CLIENT SIDE
 
 In Terminal, type the following commands:
 --
@@ -108,7 +132,7 @@ In Terminal, type the following commands:
 If you see Hello World in the DOM, you are ready to build a simple client-side app.
 --
 
-# SERVER SIDE
+## SERVER SIDE
 
 In Terminal, type the following commands:
 --
@@ -182,7 +206,7 @@ In Terminal, type the following commands:
 If you see Hello from server in the console, you are ready to build a simple server-side app.
 --
 
-## COMPONENTIZING THE SERVER SIDE MIDDLEWARE
+### COMPONENTIZING THE SERVER SIDE MIDDLEWARE
 
 In Terminal, type the following commands:
 --
@@ -202,7 +226,7 @@ In server.js, add the following code to the middleware section:
     const pool = require('./modules/pool.js');
 --
 
-# COMPONENTIZING THE SERVER SIDE ROUTES
+### COMPONENTIZING THE SERVER SIDE ROUTES
 
 In Terminal, type the following commands:
 --
@@ -229,7 +253,7 @@ In server.js, add the following line of code to the routers section:
     app.use('/test', sampleRouter);
 --
 
-# DATABASE
+## DATABASE
 
 In Terminal, type the following commands:
 --
@@ -290,17 +314,17 @@ In Terminal, type the following commands:
 If you see the array [{id: 1, content: "test"}] instead of "Hello from server" in the DOM console, you are ready to build a full-stack app.
 --
 
-# REDUX
+## REDUX
 
-## COMPONENTIZING REDUX
+### COMPONENTIZING REDUX
 
-# SAGAS
+## SAGAS
 
-## COMPONENTIZING SAGAS
+### COMPONENTIZING SAGAS
 
-# THIRD PARTY API
+## THIRD PARTY API
 
-# VERSION CONTROL
+## VERSION CONTROL
 
 Go to github.com and login
 Click New to create a new repository
