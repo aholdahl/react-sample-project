@@ -165,8 +165,10 @@ In server.js, add the following lines of code:
     const PORT = process.env.PORT || 5000;
 
     /** ---------- MIDDLEWARE ---------- **/
+    // app.use(bodyParser.urlencoded({ extended: true }));
+    // app.use(express.static('server/public'));
+
     app.use(bodyParser.json()); // needed for axios requests
-    // app.use(bodyParser.urlencoded({extended: true}));
     app.use(express.static('build'));
 
     /** ---------- EXPRESS ROUTES ---------- **/
@@ -304,17 +306,15 @@ Enter a description and select the desired privacy settings
 Click Create Repository
 
 In Terminal, enter the following commands:
---
+
     git init
     git add .
     git commit -m "initial commit"
     git remote add origin https://github.com/yourUserName/sample-project-name.git
     git push -u origin master
---
 
 Going forward, if you are the sole contributor, future changes can be pushed as follows:
---
+
     git add .
     git commit -m "description of recent changes"
     git push
---
