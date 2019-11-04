@@ -9,12 +9,20 @@ import { Provider } from 'react-redux';
 import logger from 'redux-logger';
 import rootReducer from './redux/reducers';
 
+import createSagaMiddleware from 'redux-saga';
+import { takeEvery, put } from 'redux-saga/effects';
+import rootSaga from './redux/sagas';
+
+const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
     combineReducers({
         rootReducer,
     }),
-    applyMiddleware(logger)
+    applyMiddleware(sagaMiddleware, logger)
 )
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 

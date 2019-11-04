@@ -307,7 +307,7 @@ In index.js, add the following lines below the existing imports:
 
     const sampleReducer = (state = '', action) => {
         switch (action.type){
-            case 'DISPATCH_TYPE': console.log('Hello from sampleReducer');
+            case 'DISPATCH_TYPE': return 'Hello from sampleReducer';
             default: return state;
         }
     }
@@ -377,7 +377,84 @@ In src/redux/reducers/index.js, add the following lines of code:
 
 ## SAGAS
 
+In Terminal, type the following commands:
+
+    npm install redux-saga
+
+In src/index.js, add the following lines to the imports:
+
+    import createSagaMiddleware from 'redux-saga';
+    import { takeEvery, put } from 'redux-saga/effects';
+
+In src/index.js, add the following lines above the const store:
+
+    function* rootSaga(){
+        yield takeEvery('SAMPLE_SAGA', sampleSaga);
+    }
+
+    function* sampleSaga(){
+        try {
+            console.log('Hello from sampleSaga')
+        } catch (error) {
+            console.log('Error in sampleSaga: ', error)
+        }
+    }
+
+    const sagaMiddleware = createSagaMiddleware();
+
+In src/index.js, add sagaMiddleware to applyMiddleware BEFORE logger
+In src/index.js, add the following lines of code below the const store:
+
+    sagaMiddleware.run(rootSaga);
+    
+In App.js, add the following to componentDidMount:
+
+    this.props.dispatch({
+      type: 'SAMPLE_SAGA'
+    })
+
+If you see Hello from sampleSaga in the DOM console, you are ready to begin using Redux-Sagas
+
 ### COMPONENTIZING SAGAS
+
+In Terminal, type the following commands:
+
+    cd src/redux
+    mkdir sagas
+    cd sagas
+    touch index.js
+    touch sampleSaga.js
+
+In src/index.js, add the following line to the imports:
+
+    import rootSaga from './redux/sagas';
+
+In src/index.js, delete the rootSaga function
+In src/redux/sagas/index.js, add the following lines:
+
+    import { all } from 'redux-saga/effects';
+    import sampleSaga from './sampleSaga.js';
+
+    function* rootSaga() {
+        yield all ([
+            sampleSaga(),
+        ])
+    }
+
+    export default rootSaga;
+
+In sampleSaga.js, add the following lines:
+
+    import axios from 'axios';
+    import { takeEvery, put } from 'redux-saga/effects';
+
+    function* sampleSagaRoot() {
+        yield takeEvery('SAMPLE_SAGA', sampleSaga);
+    }
+
+    export default sampleSagaRoot;
+
+Cut the sampleSaga function from src/index.js and paste into sampleSaga.js, above the other function
 
 ## THIRD PARTY API
 

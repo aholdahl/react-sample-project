@@ -13,6 +13,9 @@ class App extends Component {
     this.props.dispatch({
       type: 'DISPATCH_TYPE'
     })
+    this.props.dispatch({
+      type: 'SAMPLE_SAGA'
+    })
   }
 
   render (){
