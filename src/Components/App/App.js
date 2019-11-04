@@ -2,12 +2,16 @@ import React, {Component} from 'react';
 import './App.css';
 import axios from 'axios';
 import SampleComponent from '../SampleComponent/SampleComponent.js';
+import { connect } from 'react-redux';
 
 class App extends Component {
   componentDidMount(){
     axios.get('/test')
     .then((response)=>{
       console.log(response.data);
+    })
+    this.props.dispatch({
+      type: 'DISPATCH_TYPE'
     })
   }
 
@@ -21,4 +25,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect ()(App);

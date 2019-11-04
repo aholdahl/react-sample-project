@@ -77,6 +77,8 @@ If you see Hello World in the DOM, you are ready to build a simple client-side a
 In Terminal, type the following commands:
 
     cd src
+    mkdir Components
+    cd Components
     mkdir App
     mkdir SampleComponent
     cd SampleComponent
@@ -101,7 +103,7 @@ In SampleComponent, add the following code:
 Move App.js, App.css, and App.test.js into the new App folder
 In index.js, update the App import to the following:
 
-    import App from './App/App.js';
+    import App from './Components/App/App.js';
 
 In App.js, add the following code to the list of imports:
 
@@ -130,7 +132,6 @@ In Terminal, type the following commands:
     cd server
     touch server.js
 
-
 In package.json, add the following line to the first section of the object:
 
     "proxy": "http://localhost:5000",
@@ -147,14 +148,13 @@ In App.js, add the following line to the imports:
 
     import axios from 'axios';
 
-
 In App.js, add the following lines within the class App extends Component object:
 
     componentDidMount(){
-    axios.get('/test')
-    .then((response)=>{
-        console.log(response.data);
-    })
+        axios.get('/test')
+        .then((response)=>{
+            console.log(response.data);
+        })
     }
 
 In server.js, add the following lines of code:
@@ -204,7 +204,6 @@ In sample.router.js, enter the following code:
 
     const express = require('express');
     const router = express.Router();
-    const pool = require('../modules/pool.js');
 
     module.exports = router;
 
@@ -226,6 +225,7 @@ In Terminal, type the following commands:
 In server.js, add the following line to the middleware section:
 
     const pg = require('pg');
+
     const Pool = pg.Pool;
     const pool = new Pool({
         database: 'sample_database_name',
@@ -287,15 +287,140 @@ In server.js, add the following code to the middleware section:
 
     const pool = require('./modules/pool.js');
 
+For server-side routers, add the following code to the top section:
+
+    const pool = require('../modules/pool.js');
+
 ## REDUX
 
+In Terminal, type the following commands:
+
+    npm install redux
+    npm install react-redux
+    npm install redux-logger
+
+In index.js, add the following lines below the existing imports:
+
+    import { createStore, combineReducers, applyMiddleware } from 'redux';
+    import { Provider } from 'react-redux';
+    import logger from 'redux-logger';
+
+    const sampleReducer = (state = '', action) => {
+        switch (action.type){
+            case 'DISPATCH_TYPE': console.log('Hello from sampleReducer');
+            default: return state;
+        }
+    }
+
+    const store = createStore(
+        combineReducers({
+            sampleReducer,
+        }),
+        applyMiddleware(logger)
+    )
+
+In index.js, replace <App /> with the following:
+
+    <Provider store={store}><App /></Provider>
+
+In App.js, add the following to the imports:
+
+    import {connect} from 'react-redux';
+
+In App.js, add the following to the componentDidMount:
+
+    this.props.dispatch({
+      type: 'DISPATCH_TYPE'
+    })
+
+In App.js, update export default App to the following:
+
+    export default connect ()(App);
+
+If you see Hello from sampleReducer in the DOM console, you are ready to begin using Redux
+
 ### COMPONENTIZING REDUX
+
+In Terminal, type the following commands:
+
+    cd src
+    mkdir redux
+    cd redux
+    mkdir reducers
+    cd reducers
+    touch index.js
+    touch sampleReducer.js
+
+Cut the sampleReducer block from src/index.js and paste it into sampleReducer.js
+In sampleReducer.js, add the following line to the bottom of the file:
+
+    export default sampleReducer;
+
+In src/index.js, add the following line to the imports:
+
+    import rootReducer from './redux/reducers';
+
+In src/index.js, select sampleReducer in const store and replace with the following:
+
+    rootReducer,
+
+In src/redux/reducers/index.js, add the following lines of code:
+
+    import { combineReducers } from 'redux';
+    import sampleReducer from './sampleReducer.js';
+
+    const rootReducer = combineReducers({
+        sampleReducer,
+    });
+
+    export default rootReducer;
 
 ## SAGAS
 
 ### COMPONENTIZING SAGAS
 
 ## THIRD PARTY API
+
+## COOKIES
+
+In App.js, add the following function to the imports:
+
+    const getCookie = (cookieName) => {
+    // Get name followed by anything except a semicolon
+    const cookieString = RegExp('' + cookieName + '[^;]+').exec(document.cookie);
+    // Return everything after the equal sign, or an empty string if the cookie name not found
+    return decodeURIComponent(!!cookieString ? cookieString.toString().replace(/^[^=]+./, '') : '');
+    }
+
+In App.js, add the following function within the class App extends Component object (or to the state, if applicable):
+
+    state = {
+        clickCount: getCookie('count') || 0,
+        username: getCookie('username') || 'Guest',
+        usernameIsEditable: false,
+    }
+
+Cookie details can be assigned new values as follows:
+
+    document.cookie = "username=John Doe";
+
+More information about cookies can be found here: https://www.w3schools.com/js/js_cookies.asp
+
+## SESSIONS
+
+In Terminal, type the following commands:
+
+    npm install cookie-session
+
+In server.js, add the following lines of code:
+
+    const cookieSession = require('cookie-session');
+    app.use(cookieSession({
+        name: 'session',
+        keys: ['session'],
+        // Cookie Options
+        maxAge: 2 * 60 * 1000 // 2 minutes
+    }));
 
 ## VERSION CONTROL
 
@@ -318,3 +443,84 @@ Going forward, if you are the sole contributor, future changes can be pushed as 
     git add .
     git commit -m "description of recent changes"
     git push
+
+## DEPLOY TO HEROKU (NO DATABASE)
+
+Assuming you have already installed the Heroku CLI:
+
+Login to Heroku.com
+Click New, then select Create New App
+Enter your project name: sample-project-name
+Click Create App
+
+In Terminal, enter the following command and follow the prompts:
+
+    heroku login
+    heroku git:remote -a sample-project-name
+    git add .
+    git commit -m "description of recent changes"
+    git push heroku master
+
+To update deployment
+
+    git add .
+    git commit -m "description of recent changes"
+    git push heroku master
+
+## DEPLOY TO HEROKU (FULL-STACK)
+
+In Server.js, ensure the PORT is as follows:
+
+    const PORT = process.env.PORT || 5000;
+
+In pool.js, update the const Pool AND const pool to the following:
+
+    const url = require('url');
+    let config = {};
+
+    if (process.env.DATABASE_URL) {
+        const params = url.parse(process.env.DATABASE_URL);
+        const auth = params.auth.split(':');
+        config = {
+        user: auth[0],
+        password: auth[1],
+        host: params.hostname,
+        port: params.port,
+        database: params.pathname.split('/')[1],
+        ssl: true,
+        max: 10,
+        idleTimeoutMillis: 30000,
+    };
+
+        const pool = new Pool(config ||
+            {
+                database: 'sample_database_name',
+                host: 'localhost',
+                port: 5432,
+                max: 10,
+                idleTimeoutMillis: 30000
+            }
+        )
+    }
+
+Update the pool.on('error') function to include the following exit method:
+
+    process.exit(-1);
+
+In Terminal, enter the following command:
+
+    npm run build
+    heroku addons:create heroku-postgresql:hobby-dev
+    heroku pg:push sample_database_name DATABASE_URL
+    git add .
+    git commit -m "description of recent changes"
+    git push heroku master
+    heroku open
+
+If the project launches successfully, the build was successful
+To update deployment:
+
+    npm run build
+    git add .
+    git commit -m "description of recent changes"
+    git push heroku master
