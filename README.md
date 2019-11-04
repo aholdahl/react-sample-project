@@ -83,6 +83,7 @@ In Terminal, type the following commands:
     mkdir SampleComponent
     cd SampleComponent
     touch SampleComponent.js
+    cd ../../..
 
 In SampleComponent, add the following code:
 
@@ -115,9 +116,7 @@ In App.js, add the following code to the return section (below Hello World):
 
 In Terminal, type the following commands:
 
-    cd ../..
     npm start
-
 
 If you see Hello World in the DOM, you are ready to build a simple client-side app.
 
@@ -131,6 +130,7 @@ In Terminal, type the following commands:
     mkdir server
     cd server
     touch server.js
+    cd ..
 
 In package.json, add the following line to the first section of the object:
 
@@ -195,10 +195,11 @@ If you see Hello from server in the console, you are ready to build a simple ser
 
 In Terminal, type the following commands:
 
-    cd ..
+    cd server
     mkdir routes
     cd routes
     touch sample.router.js
+    cd ../..
 
 In sample.router.js, enter the following code:
 
@@ -218,7 +219,6 @@ In server.js, add the following line of code to the routers section:
 
 In Terminal, type the following commands:
 
-    cd ..
     touch database.sql
     npm install pg
 
@@ -274,9 +274,11 @@ If you see the array [{id: 1, content: "test"}] instead of "Hello from server" i
 
 In Terminal, type the following commands:
 
+    cd server
     mkdir modules
     cd modules
     touch pool.js
+    cd ../..
 
 Cut the pg/pool code block from server.js and paste it into pool.js
 In pool.js, add the following line to the bottom of the file:
@@ -350,6 +352,7 @@ In Terminal, type the following commands:
     cd reducers
     touch index.js
     touch sampleReducer.js
+    cd ../../..
 
 Cut the sampleReducer block from src/index.js and paste it into sampleReducer.js
 In sampleReducer.js, add the following line to the bottom of the file:
@@ -424,6 +427,7 @@ In Terminal, type the following commands:
     cd sagas
     touch index.js
     touch sampleSaga.js
+    cd ../../..
 
 In src/index.js, add the following line to the imports:
 
@@ -457,6 +461,8 @@ In sampleSaga.js, add the following lines:
 Cut the sampleSaga function from src/index.js and paste into sampleSaga.js, above the other function
 
 ## THIRD PARTY API
+
+Coming soon...
 
 ## COOKIES
 
@@ -499,6 +505,14 @@ In server.js, add the following lines of code:
         maxAge: 2 * 60 * 1000 // 2 minutes
     }));
 
+## USER AUTHENTICATION/AUTHORIZATION
+
+Coming soon...
+
+## TESTING
+
+Coming soon...
+
 ## VERSION CONTROL
 
 Go to github.com and login
@@ -520,6 +534,26 @@ Going forward, if you are the sole contributor, future changes can be pushed as 
     git add .
     git commit -m "description of recent changes"
     git push
+
+## README
+
+Update your Readme before deployment. A good readme should include:
+    Project Name
+    List of Technologies
+    Instructions for downloading and running the project on a local machine
+        System Prerequisites
+        Installation
+    Table of Contents
+    Documentation on how a user would experience the completed features of the app (with screenshots)
+    Debugging/Testing Instructions and list of known issues
+    Next version wishlist
+    Deployment Information
+    Author Attribution
+    Achnowledgements
+
+## ACCESSIBILITY/USABILITY PRINCIPLES
+
+Coming soon...
 
 ## DEPLOY TO HEROKU (NO DATABASE)
 
