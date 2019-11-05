@@ -585,7 +585,7 @@ In Server.js, ensure the PORT is as follows:
     const PORT = process.env.PORT || 5000;
 
 In pool.js, update the const Pool AND const pool to the following:
-
+code 
     const url = require('url');
     let config = {};
 
@@ -593,26 +593,24 @@ In pool.js, update the const Pool AND const pool to the following:
         const params = url.parse(process.env.DATABASE_URL);
         const auth = params.auth.split(':');
         config = {
-        user: auth[0],
-        password: auth[1],
-        host: params.hostname,
-        port: params.port,
-        database: params.pathname.split('/')[1],
-        ssl: true,
-        max: 10,
-        idleTimeoutMillis: 30000,
-    };
-
-        const pool = new Pool(config ||
-            {
-                database: 'sample_database_name',
-                host: 'localhost',
-                port: 5432,
-                max: 10,
-                idleTimeoutMillis: 30000
-            }
-        )
+            user: auth[0],
+            password: auth[1],
+            host: params.hostname,
+            port: params.port,
+            database: params.pathname.split('/')[1],
+            ssl: true,
+            max: 10,
+            idleTimeoutMillis: 30000,
+        } || {
+            database: 'sample_database_name',
+            host: 'localhost',
+            port: 5432,
+            max: 10,
+            idleTimeoutMillis: 30000
+        }
     }
+
+    const pool = new pg.Pool(config);
 
 Update the pool.on('error') function to include the following exit method:
 
@@ -635,3 +633,28 @@ To update deployment:
     git add .
     git commit -m "description of recent changes"
     git push heroku master
+
+## DEPLOY TO GITHUB PAGES
+
+In Terminal, enter the following command:
+
+    npm install gh-pages --save-dev
+
+In package.json, add the following line to the top section:
+
+    "homepage": "http://your-username.github.io/sample-project-name",
+
+In package.json, add the following lines to the Scripts section:
+
+    "deploy": "gh-pages -d build",
+
+In Terminal, enter the following command:
+
+    npm run build
+    npm run deploy
+    git add .
+    git commit -m "description of recent changes"
+    git push origin master
+
+Rerun these same commands to update deployment:
+
