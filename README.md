@@ -1,5 +1,7 @@
 # ASSUMPTIONS
 
+You are working on a Mac
+
 You are already familiar with the React framework. 
     This project is intended to be a process document for reference during the build process. It is not intended for training programmers that are new to React and therefore does not elaborate on the "why" or the "how".
 
@@ -13,12 +15,12 @@ You should have the following installed:
 # USING THIS REPO AS A TEMPLATE
 
 Open the repo in Github: https://github.com/aholdahl/react-sample-project
-Click Clone or Download, then click Download ZIP
-Unzip the file and rename it
-Create your database and table(s) in Postico
-Update database.sql to reflect the SQL code to create the database and tables for the initial setup of your project
-Update pool.js to reflect the applicable database name
-Update sample.router.js to reflect the applicable table name in queryText
+Click Clone or Download, then click Download ZIP.
+Unzip the file and rename it.
+Create your database and table(s) in Postico.
+Update database.sql to reflect the SQL code to create the database and tables for the initial setup of your project.
+Update pool.js to reflect the applicable database name.
+Update sample.router.js to reflect the applicable table name in queryText.
 In Terminal, run the following commands:
 
     npm install
@@ -44,7 +46,9 @@ In Terminal, type the following commands:
 
 In .gitignore, ensure the following are present:
 
+    .git
     .DS_Store
+    .log
     /node_modules
 
 In index.css and app.css, clear all styling.
@@ -65,7 +69,7 @@ In App.js, select all and replace with the following:
 
     export default App;
 
-Delete logo.svg
+Delete logo.svg.
 In Terminal, type the following command:
 
     npm start
@@ -76,6 +80,7 @@ If you see Hello World in the DOM, you are ready to build a simple client-side a
 
 In Terminal, type the following commands:
 
+    ctrl+C
     cd src
     mkdir Components
     cd Components
@@ -101,7 +106,7 @@ In SampleComponent, add the following code:
 
     export default SampleComponent;
 
-Move App.js, App.css, and App.test.js into the new App folder
+Move App.js, App.css, and App.test.js into the new App folder.
 In index.js, update the App import to the following:
 
     import App from './Components/App/App.js';
@@ -124,6 +129,7 @@ If you see Hello World in the DOM, you are ready to build a simple client-side a
 
 In Terminal, type the following commands:
 
+    ctrl+C
     npm install axios
     npm install express
     npm install body-parser
@@ -165,9 +171,6 @@ In server.js, add the following lines of code:
     const PORT = process.env.PORT || 5000;
 
     /** ---------- MIDDLEWARE ---------- **/
-    // app.use(bodyParser.urlencoded({ extended: true }));
-    // app.use(express.static('server/public'));
-
     app.use(bodyParser.json()); // needed for axios requests
     app.use(express.static('build'));
 
@@ -184,17 +187,17 @@ In server.js, add the following lines of code:
 
 In Terminal, type the following commands:
 
-    ctrl+c
     npm run server
     cmd+t
     npm run client
 
-If you see Hello from server in the console, you are ready to build a simple server-side app.
+If you see Hello from server in the DOM console, you are ready to build a simple server-side app.
 
 ### COMPONENTIZING THE SERVER SIDE ROUTES
 
 In Terminal, type the following commands:
 
+    ctrl+C
     cd server
     mkdir routes
     cd routes
@@ -208,21 +211,28 @@ In sample.router.js, enter the following code:
 
     module.exports = router;
 
-Copy the GET request code block from server.js and paste int into the middle of sample.router.js (above module.exports)
-Change app.get('/test') to router.get('/')
+Cut the GET request code block from server.js and paste it into the middle of sample.router.js (above module.exports).
+Change app.get('/test') to router.get('/').
 In server.js, add the following line of code to the routers section:
 
     const sampleRouter = require('./routes/sample.router.js');
     app.use('/test', sampleRouter);
 
+In Terminal, type the following commands:
+
+    npm run client
+
+If you see Hello from server in the DOM console, you have successfully componentized the server-side routes.
+
 ## DATABASE
 
 In Terminal, type the following commands:
 
+    ctrl+C
     touch database.sql
     npm install pg
 
-In server.js, add the following line to the middleware section:
+In server.js (or sample.router.js if componentized), add the following line to the middleware section:
 
     const pg = require('pg');
 
@@ -241,7 +251,7 @@ In server.js, add the following line to the middleware section:
         console.log('error connecting pool to database');
     })
 
-In server.js, replace the res.send line with the following:
+In server.js (or sample.router.js if componentized), replace the res.send line with the following:
 
     let queryText = `SELECT * FROM "test_table";`
     pool.query(queryText)
@@ -258,15 +268,17 @@ In database.sql, add the following lines:
         "id" SERIAL PRIMARY KEY,
         "content" TEXT NOT NULL
     );
+
     INSERT INTO "test_table" ("content") VALUES ('test');
 
-In Postico, create the database "sample_database_name"
-In SQL Query, copy+paste the CREATE TABLE script from above then click "Execute Statement"
+In Postico, create the database "sample_database_name".
+In SQL Query, copy+paste the CREATE TABLE script from above then click "Execute Statement".
 
 In Terminal, type the following commands:
 
-    cmd+t
     brew services start postgresql
+    cmd+t
+    npm run client
 
 If you see the array [{id: 1, content: "test"}] instead of "Hello from server" in the DOM console, you are ready to build a full-stack app.
 
@@ -274,13 +286,14 @@ If you see the array [{id: 1, content: "test"}] instead of "Hello from server" i
 
 In Terminal, type the following commands:
 
+    ctrl+C
     cd server
     mkdir modules
     cd modules
     touch pool.js
     cd ../..
 
-Cut the pg/pool code block from server.js and paste it into pool.js
+Cut the pg/pool code block from server.js (or sample.router.js if componentized) and paste it into pool.js.
 In pool.js, add the following line to the bottom of the file:
 
     module.exports = pool;
@@ -293,10 +306,17 @@ For server-side routers, add the following code to the top section:
 
     const pool = require('../modules/pool.js');
 
+In Terminal, enter the following commands:
+
+    npm run client
+
+If you see the array [{id: 1, content: "test"}], you have successfully componentized the server-side middleware.
+
 ## REDUX
 
 In Terminal, type the following commands:
 
+    ctrl+C
     npm install redux
     npm install react-redux
     npm install redux-logger
@@ -339,12 +359,17 @@ In App.js, update export default App to the following:
 
     export default connect ()(App);
 
-If you see Hello from sampleReducer in the DOM console, you are ready to begin using Redux
+In Terminal, enter the following commands:
+
+    npm run client
+
+If you see sampleReducer: "Hello from sampleReducer" in the DOM console, you are ready to begin using Redux
 
 ### COMPONENTIZING REDUX
 
 In Terminal, type the following commands:
 
+    ctrl+C
     cd src
     mkdir redux
     cd redux
@@ -354,7 +379,7 @@ In Terminal, type the following commands:
     touch sampleReducer.js
     cd ../../..
 
-Cut the sampleReducer block from src/index.js and paste it into sampleReducer.js
+Cut the sampleReducer block from src/index.js and paste it into sampleReducer.js.
 In sampleReducer.js, add the following line to the bottom of the file:
 
     export default sampleReducer;
@@ -378,18 +403,23 @@ In src/redux/reducers/index.js, add the following lines of code:
 
     export default rootReducer;
 
+In Terminal, enter the following commands:
+
+    npm run client
+
+If you see sampleReducer: "Hello from sampleReducer" in the DOM console, you have successfully componentized Redux.
+
 ## SAGAS
 
 In Terminal, type the following commands:
 
+    ctrl+C
     npm install redux-saga
 
 In src/index.js, add the following lines to the imports:
 
     import createSagaMiddleware from 'redux-saga';
-    import { takeEvery, put } from 'redux-saga/effects';
-
-In src/index.js, add the following lines above the const store:
+    import { takeEvery } from 'redux-saga/effects';
 
     function* rootSaga(){
         yield takeEvery('SAMPLE_SAGA', sampleSaga);
@@ -397,15 +427,15 @@ In src/index.js, add the following lines above the const store:
 
     function* sampleSaga(){
         try {
-            console.log('Hello from sampleSaga')
+            yield console.log('Hello from sampleSaga')
         } catch (error) {
-            console.log('Error in sampleSaga: ', error)
+            yield console.log('Error in sampleSaga: ', error)
         }
     }
 
     const sagaMiddleware = createSagaMiddleware();
 
-In src/index.js, add sagaMiddleware to applyMiddleware BEFORE logger
+In src/index.js, add sagaMiddleware to applyMiddleware BEFORE logger.
 In src/index.js, add the following lines of code below the const store:
 
     sagaMiddleware.run(rootSaga);
@@ -416,12 +446,17 @@ In App.js, add the following to componentDidMount:
       type: 'SAMPLE_SAGA'
     })
 
+In Terminal, enter the following commands:
+
+    npm run client
+
 If you see Hello from sampleSaga in the DOM console, you are ready to begin using Redux-Sagas
 
 ### COMPONENTIZING SAGAS
 
 In Terminal, type the following commands:
 
+    ctrl+C
     cd src/redux
     mkdir sagas
     cd sagas
@@ -458,13 +493,19 @@ In sampleSaga.js, add the following lines:
 
     export default sampleSagaRoot;
 
-Cut the sampleSaga function from src/index.js and paste into sampleSaga.js, above the other function
+Cut the sampleSaga function from src/index.js and paste into sampleSaga.js, above the root function.
+
+In Terminal, enter the following commands:
+
+    npm run client
+
+If you see Hello from sampleSaga in the DOM console, you have successfully componentized Redux-Sagas.
 
 ## THIRD PARTY API
 
 Coming soon...
 
-## COOKIES
+## COOKIES (NOT TESTED)
 
 In App.js, add the following function to the imports:
 
@@ -489,7 +530,7 @@ Cookie details can be assigned new values as follows:
 
 More information about cookies can be found here: https://www.w3schools.com/js/js_cookies.asp
 
-## SESSIONS
+## SESSIONS (NOT TESTED)
 
 In Terminal, type the following commands:
 
@@ -513,6 +554,10 @@ Coming soon...
 
 Coming soon...
 
+## ACCESSIBILITY/USABILITY PRINCIPLES
+
+Coming soon...
+
 ## VERSION CONTROL
 
 Go to github.com and login
@@ -523,6 +568,7 @@ Click Create Repository
 
 In Terminal, enter the following commands:
 
+    ctrl+C
     git init
     git add .
     git commit -m "initial commit"
@@ -551,9 +597,13 @@ Update your Readme before deployment. A good readme should include:
     Author Attribution
     Achnowledgements
 
-## ACCESSIBILITY/USABILITY PRINCIPLES
+## TITLE AND FAVICON
 
-Coming soon...
+In index.html, be sure to update the <title></title> to reflect an appropriate name. 
+
+You can also add a favicon using the following block of code (save your desired favicon image as a .ico file type and update the href as needed):
+
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
 ## DEPLOY TO HEROKU (NO DATABASE)
 
