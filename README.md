@@ -485,8 +485,8 @@ In src/redux/sagas/index.js, add the following lines:
 
 In sampleSaga.js, add the following lines:
 
-    import axios from 'axios';
-    import { takeEvery, put } from 'redux-saga/effects';
+    // import axios from 'axios';
+    import { takeEvery, /* put */ } from 'redux-saga/effects';
 
     function* sampleSagaRoot() {
         yield takeEvery('SAMPLE_SAGA', sampleSaga);
@@ -494,6 +494,7 @@ In sampleSaga.js, add the following lines:
 
     export default sampleSagaRoot;
 
+In src/index.js, delete the takeEvery import.
 Cut the sampleSaga function from src/index.js and paste into sampleSaga.js, above the root function.
 
 In Terminal, enter the following commands:
@@ -587,32 +588,28 @@ Ensure index.html reflects the following in the head:
 In App.css, enter the following:
 
     :root {
-        --primary-color: #00004d;
-        --secondary-color: #531200; 
+        --primary-color: #5f9ea0;
+        --secondary-color: #3d6a6b; 
         --primary-font: Century Gothic, sans-serif;
         --secondary-font: Garamond, serif;
-        --xs-breakpoint: 320px;
-        --sm-breakpoint: 480px;
-        --md-breakpoint: 720px;
-        --lg-breakpoint: 1080px;
-        --xl-breakpoint: 1620px;
     }
 
-    {/* Smart Phones, approximately */}
-    @media only screen and (min-width: var(--xs-breakpoint)){}
-    {/* Tablets, approximately */}
-    @media only screen and (min-width: var(--sm-breakpoint)){}
-    {/* Laptops, approximately */}
-    @media only screen and (min-width: var(--md-breakpoint)){}
-    {/* Desktops, approximately */}
-    @media only screen and (min-width: var(--lg-breakpoint)){}
-    {/* Televisions */}
-    @media only screen and (min-width: var(--xl-breakpoint)){}
+    @supports (grid-area: auto){
+        /* Smart Phones, approximately */
+        @media only screen and (min-width: 320px){}
+        /* Tablets, approximately */
+        @media only screen and (min-width: 480px){}
+        /* Laptops, approximately */
+        @media only screen and (min-width: 720px){}
+        /* Desktops, approximately */
+        @media only screen and (min-width: 1080px){}
+        /* Televisions */
+        @media only screen and (min-width: 1620px){}
+    }
 
-Assigning the breakpoints in :root allows for the modification of these breakpoints without hunting through the file. The breakpoints provided in this file are a template and should be modified to the various widths where the design stops looking good, as device sizes will vary widely and continue to change.
+The breakpoints provided in this file are a template and should be modified to the various widths where the design stops looking good, as device sizes will vary widely and continue to change. 
 Directly under :root, design for the smallest device imaginable.
-Within each of the lower brackets, add only the design aspects that need to be changed (typically, this involves display, alignment, and anything measured in px [font, width, height]).
-You will likely need to use classNames liberally to do this effectively.
+Within each of the lower brackets, add only the design aspects that need to be changed (typically, this involves display, alignment, and anything measured in px [font, width, height]). You will likely need to use classNames liberally to do this effectively. If css grid is not supported, the display will default to the mobile version.
 
 ## TESTING
 
@@ -649,13 +646,13 @@ Update your Readme before deployment. A good readme should include:
     Instructions for downloading and running the project on a local machine
         System Prerequisites
         Installation
-    Table of Contents
     Documentation on how a user would experience the completed features of the app (with screenshots)
-    Debugging/Testing Instructions and list of known issues
+        Table of Contents
+        Debugging/Testing Instructions and list of known issues
     Next version wishlist
     Deployment Information
     Author Attribution
-    Achnowledgements
+    Acknowledgements
 
 ## TITLE AND FAVICON
 
